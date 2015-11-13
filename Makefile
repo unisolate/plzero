@@ -1,24 +1,20 @@
-CC = gcc
-PROGRAM = pl0
-OBJDIR = bin
+CC = clang
+PROG = pl0
 BINDIR = bin
 SRCDIR = src
-OBJS = ${OBJDIR}/pl0.o
-CFLAGS = -m32 -Iinclude
-CCOMPILE = ${CC} ${CFLAGS} -c
+CFLAGS = -I$(SRCDIR) -Wall
+INC = lex.h
+OBJ = lex.o
 
-default: ${PROGRAM}
+all: $(OBJ)
+	$(CC) $(CFLAGS) -o $(BINDIR)/$(PROG)
 
-${PROGRAM}: ${OBJS}
-	@mkdir -p ${BINDIR}
-	${CC} ${CFLAGS} -o ${BINDIR}/${PROGRAM} ${OBJS}
+%.o: %.c $(INC)
 
-${OBJDIR}/%.o: ${SRCDIR}/%.c
-	@mkdir -p ${OBJDIR}
-	${CCOMPILE} -o $@ $<
+test: ./$(BINDIR)/pl0
+	./$(BINDIR)/pl0 ./test/test.pl0
 
-test: pl0
-	./${BINDIR}/pl0 ./test/tests.pl0
+.PHONY: clean
 
 clean:
-	- rm -f ${OBJDIR}/*.o
+	rm -f $(BINDIR)/*.o
