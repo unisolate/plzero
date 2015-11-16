@@ -1,8 +1,23 @@
-#include "lex.h"
+#include "lexer.h"
 
 #include <stdio.h>
 #include <ctype.h>
 #include <string.h>
+
+void init() {
+    sym_table[','] = Comma;
+    sym_table['='] = Equal;
+    sym_table['#'] = NotEqual;
+    sym_table['('] = LeftParentheses;
+    sym_table[')'] = RightParentheses;
+    sym_table['+'] = Plus;
+    sym_table['-'] = Minus;
+    sym_table['*'] = Multiply;
+    sym_table['/'] = Divide;
+    sym_table[';'] = Semicolon;
+
+    ch = ' ';
+}
 
 void getch() {
     ch = getchar();
@@ -27,7 +42,6 @@ void getsym() {
                 return;
             }
         }
-
         sym = Ident;
     } else if (isdigit(ch)) {
         num = 0;
@@ -37,36 +51,32 @@ void getsym() {
         }
 
         sym = Number;
-    } else if (ch == ',') {
-        sym = Comma;
-    } else if (ch == '=') {
-        sym = Equal;
     } else if (ch == ':') {
         getch();
         if (ch == '=') {
             sym = Assign;
+            getch();
         } else {
             sym = Error;
         }
-    } else if (ch == '#') {
-        sym = NotEqual;
-    } else if (ch == '(') {
-        sym = LeftParentheses;
-    } else if (ch == ')') {
-        sym = RightParentheses;
-    } else if (ch == '+') {
-        sym = Plus;
-    } else if (ch == '-') {
-        sym = Minus;
-    } else if (ch == '*') {
-        sym = Multiply;
-    } else if (ch == '/') {
-        sym = Divide;
     } else if (ch == '<') {
-        sym = Less;
+        getch();
+        if (ch == '=') {
+            sym = LessEqual;
+            getch();
+        } else {
+            sym = Less;
+        }
     } else if (ch == '>') {
-        sym = Greater;
-    } else if (ch == ';') {
-        sym = Semicolon;
+        getch();
+        if (ch == '=') {
+            sym = GreaterEqual;
+            getch();
+        } else {
+            sym = Greater;
+        }
+    } else {
+        sym = sym_table[ch];
+        getch();
     }
 }
