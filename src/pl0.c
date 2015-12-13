@@ -7,26 +7,26 @@
 #include <ctype.h>
 
 int main(int argc, char *argv[]) {
-    char *file_name = NULL;
-    char *out_name = NULL;
+    char *src_name = NULL;
+    char *bin_name = NULL;
     int c;
 
     opterr = 0;
     while ((c = getopt(argc, argv, "o:")) != -1) {
         switch (c) {
             case 'o':
-                out_name = optarg;
+                bin_name = optarg;
                 break;
             case '?':
                 if (optopt == 'o') {
-                    fprintf(stderr, "Error: Option -%c requires an argument.\n",
-                            optopt);
+                    fprintf(stderr, 
+                        "Error: Option -%c requires an argument.\n", optopt);
                 } else if (isprint(optopt)) {
-                    fprintf(stderr, "Error: Unknown option `-%c'.\n", optopt);
+                    fprintf(stderr, 
+                        "Error: Unknown option `-%c'.\n", optopt);
                 } else {
-                    fprintf(stderr,
-                            "Error: Unknown option character `\\x%x'.\n",
-                            optopt);
+                    fprintf(stderr, 
+                        "Error: Unknown option character `\\x%x'.\n", optopt);
                 }
                 return 1;
             default:
@@ -43,11 +43,12 @@ int main(int argc, char *argv[]) {
         return 1;
     }
 
-    file_name = argv[optind];
-    if (out_name == NULL) {
-        out_name = file_name;
+    src_name = argv[optind];
+    if (bin_name == NULL) {
+        bin_name = src_name;
     }
 
     init();
+
     return 0;
 }

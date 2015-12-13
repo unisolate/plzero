@@ -21,20 +21,27 @@ void init() {
 
 void getch() {
     ch = getchar();
+    // printf("%c", ch);
 }
 
 void getsym() {
+    // ignore spaces
     while (isspace(ch)) {
         getch();
     }
 
     if (isalpha(ch)) {
         int id_len = 0;
-        while (isalnum(ch)) {
+        while (id_len < MAX_ID_LEN && isalnum(ch)) {
             id[id_len++] = ch;
             getch();
         }
         id[id_len] = '\0';
+
+        if (id_len == MAX_ID_LEN) {
+            sym = Error;
+            return;
+        }
 
         for (int i = 0; i < RES_WD_NUM; ++i) {
             if (!strcmp(id, res_wd[i])) {
