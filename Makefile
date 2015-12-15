@@ -1,20 +1,28 @@
+# TODO
 CC = clang
-PROG = pl0
-BINDIR = bin
+PROG = plzero
 SRCDIR = src
-CFLAGS = -I$(SRCDIR) -Wall
-INC = lex.h
-OBJ = lex.o
+OBJDIR = obj
+BINDIR = bin
+CFLAGS = -Wall
 
-all: $(OBJ)
-	$(CC) $(CFLAGS) -o $(BINDIR)/$(PROG)
+SRC = $(SRCDIR)/plzero.c $(SRCDIR)/lexer.c $(SRCDIR)/parser.c $(SRCDIR)/interpreter.c
+OBJ = $(SRC:.c=.o)
 
-%.o: %.c $(INC)
+all: $(PROG)
 
-test: ./$(BINDIR)/pl0
-	./$(BINDIR)/pl0 ./test/test.pl0
+$(PROG): $(OBJ)
+	@mkdir -p ${BINDIR}
+	$(CC) $(CFLAGS) -o $(BINDIR)/$(PROG) $(OBJ)
+
+$(OBJDIR)/%.o: $(SRCDIR)/%.c
+	@mkdir -p ${OBJDIR}
+	$(CC) -c -o $@ $<
+
+test: plzero
+	$(BINDIR)/$(PROG) test/test.pl0 > test/test.out
+	diff test/test.out test/test-std.out
 
 .PHONY: clean
-
 clean:
-	rm -f $(BINDIR)/*.o
+	rm -f $(OBJDIR)/*.o

@@ -1,89 +1,101 @@
+#include "plzero.h"
 #include "lexer.h"
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <ctype.h>
 #include <string.h>
 
-void init() {
-    sym_table[','] = Comma;
-    sym_table['='] = Equal;
-    sym_table['#'] = NotEqual;
-    sym_table['('] = LeftParentheses;
-    sym_table[')'] = RightParentheses;
-    sym_table['+'] = Plus;
-    sym_table['-'] = Minus;
-    sym_table['*'] = Multiply;
-    sym_table['/'] = Divide;
-    sym_table[';'] = Semicolon;
-
-    ch = ' ';
-}
-
 void getch() {
-    ch = getchar();
-    // printf("%c", ch);
+    if (charCnt == lineLen) {
+        if (feof(srcFile)) {
+            printf("      program incomplete\n");
+            exit(1);
+        }
+
+        lineLen = 0;
+        charCnt = 0;
+        printf("%5d ", codeAlloIdx);
+        while ((!feof(srcFile)) && ((ch = getc(srcFile)) != '\n')) {
+            printf("%c", ch);
+            lineLen = lineLen + 1;
+            line[lineLen] = ch;
+        }
+        printf("\n");
+        lineLen = lineLen + 1;
+        line[lineLen] = ' ';
+    }
+    charCnt = charCnt + 1;
+    ch = line[charCnt];
 }
 
 void getsym() {
-    // ignore spaces
-    while (isspace(ch)) {
+    int len = 0;
+
+    while (ch == ' ' || ch == '\t') {
         getch();
     }
-
-    if (isalpha(ch)) {
-        int id_len = 0;
-        while (id_len < MAX_ID_LEN && isalnum(ch)) {
-            id[id_len++] = ch;
+    
+    if (isalpha(ch)) {  // identified or reserved
+        while (len < ID_LEN && isalnum(ch)) {
+            id[len++] = ch;
             getch();
         }
-        id[id_len] = '\0';
-
-        if (id_len == MAX_ID_LEN) {
-            sym = Error;
-            return;
+        id[len] = '\0';
+        
+        while (isalnum(ch)) {
+            getch();
         }
 
-        for (int i = 0; i < RES_WD_NUM; ++i) {
-            if (!strcmp(id, res_wd[i])) {
-                sym = sym_table[i];
+        for (int i = 0; i < RES_NUM; ++i) {
+            if(!strcmp(id, resWord[i])) {
+                sym = wordSym[i];
                 return;
             }
         }
-        sym = Ident;
-    } else if (isdigit(ch)) {
+        sym = IDENT;
+    } else if (isdigit(ch)) {  // number
         num = 0;
+        sym = NUMBER;
+        
         while (isdigit(ch)) {
             num = num * 10 + ch - '0';
+            ++len;
             getch();
         }
-
-        sym = Number;
+        
+        if (len > DIGIT_MAX) {
+            error(31);
+        }
     } else if (ch == ':') {
         getch();
         if (ch == '=') {
-            sym = Assign;
+            sym = BECOMES;
             getch();
         } else {
-            sym = Error;
+            sym = NUL;
         }
     } else if (ch == '<') {
         getch();
         if (ch == '=') {
-            sym = LessEqual;
+            sym = LEQ;
+            getch();
+        } else if (ch == '>') {
+            sym = NEQ;
             getch();
         } else {
-            sym = Less;
+            sym = LSS;
         }
     } else if (ch == '>') {
         getch();
         if (ch == '=') {
-            sym = GreaterEqual;
+            sym = GEQ;
             getch();
         } else {
-            sym = Greater;
+            sym = GTR;
         }
     } else {
-        sym = sym_table[ch];
+        sym = wordSym[ch];
         getch();
     }
 }
