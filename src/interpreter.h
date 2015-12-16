@@ -5,7 +5,7 @@
 
 extern char *resWord[RES_NUM];
 
-int stk[STK_SIZE];  // datastore
+int stk[STK_SIZE];      // datastore
 
 int downBase(int base, int lev);
 void interpret();

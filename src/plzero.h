@@ -1,9 +1,8 @@
 #ifndef _PLZERO_
 #define _PLZERO_
 
-#define CODE_MAX   2000   // size of code array
-#define ID_LEN     10     // length of identifiers
-#define RES_NUM    11     // number of reserved words
+#define ID_LEN     10 // length of identifiers
+#define RES_NUM    11 // number of reserved words
 
 #define NUL        0x1
 #define IDENT      0x2
@@ -45,20 +44,20 @@ typedef enum {
     Int,
     Jmp,
     Jpc
-} fct;  // functions
+} fct;                // functions
 
 typedef struct {
-    fct func;      // function code
-    int lev;       // level
-    int addr;      // displacement address
+    fct func;         // function code
+    int lev;          // level
+    int addr;         // displacement address
 } instruction;
 
-int sym;                // last symbol read
-int charCnt;            // character count
-int lineLen;            // line length
-char id[ID_LEN + 1];    // last identifier read
-int num;                // last number read
-int codeAlloIdx;        // code allocation index
+int  sym;             // last symbol read
+int  charCnt;         // character count
+int  lineLen;         // line length
+int  num;             // last number read
+int  codeAlloIdx;     // code allocation index
+char id[ID_LEN + 1];  // last identifier read
 
 instruction code[CODE_MAX + 1];
 

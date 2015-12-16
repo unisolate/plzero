@@ -95,7 +95,7 @@ void getsym() {
             sym = GTR;
         }
     } else {
-        sym = wordSym[ch];
+        sym = wordSym[(unsigned char)ch];
         getch();
     }
 }
