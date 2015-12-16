@@ -32,4 +32,4 @@
 *.dSYM/
 
 # Bin file
-plzero
+bin/plzero
