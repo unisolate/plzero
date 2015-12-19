@@ -63,14 +63,14 @@ void init() {
     wordSym['.'] = PERIOD;
     wordSym[';'] = SEMICOLON;
 
-    strcpy(mnemonic[Lit], "Lit");
-    strcpy(mnemonic[Opr], "Opr");
-    strcpy(mnemonic[Lod], "Lod");
-    strcpy(mnemonic[Sto], "Sto");
-    strcpy(mnemonic[Cal], "Cal");
+    strcpy(mnemonic[Lit], "lit");
+    strcpy(mnemonic[Opr], "opr");
+    strcpy(mnemonic[Lod], "lod");
+    strcpy(mnemonic[Sto], "sto");
+    strcpy(mnemonic[Cal], "cal");
     strcpy(mnemonic[Int], "int");
-    strcpy(mnemonic[Jmp], "Jmp");
-    strcpy(mnemonic[Jpc], "Jpc");
+    strcpy(mnemonic[Jmp], "jmp");
+    strcpy(mnemonic[Jpc], "jpc");
 
     declBegSys = CONSTSYM | VARSYM  | PROCSYM;
     statBegSys = BEGINSYM | CALLSYM | IFSYM  | WHILESYM;

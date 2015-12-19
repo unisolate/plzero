@@ -1,8 +1,9 @@
 #ifndef _PLZERO_
 #define _PLZERO_
 
-#define ID_LEN     10 // length of identifiers
-#define RES_NUM    11 // number of reserved words
+#define ID_LEN     10    // length of identifiers
+#define RES_NUM    11    // number of reserved words
+#define CODE_MAX   2000  // size of code array
 
 #define NUL        0x1
 #define IDENT      0x2

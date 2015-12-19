@@ -18,14 +18,14 @@ void getch() {
         printf("%5d ", codeAlloIdx);
         while ((!feof(srcFile)) && ((ch = getc(srcFile)) != '\n')) {
             printf("%c", ch);
-            lineLen = lineLen + 1;
+            ++lineLen;
             line[lineLen] = ch;
         }
         printf("\n");
-        lineLen = lineLen + 1;
+        ++lineLen;
         line[lineLen] = ' ';
     }
-    charCnt = charCnt + 1;
+    ++charCnt;
     ch = line[charCnt];
 }
 

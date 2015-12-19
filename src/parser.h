@@ -1,7 +1,6 @@
 #ifndef _PARSER_
 #define _PARSER_
 
-#define CODE_MAX   2000   // size of code array
 #define TABLE_MAX  100    // length of identifier table
 #define LEV_MAX    3      // max depth of block nesting
 #define ADDR_MAX   2047   // max address

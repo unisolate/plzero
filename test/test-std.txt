@@ -11,130 +11,130 @@
    28             end
    28     end;
          2  int  0    5
-         3  Lod  1    3
-         4  Sto  0    3
-         5  Lod  1    4
-         6  Sto  0    4
-         7  Lit  0    0
-         8  Sto  1    5
-         9  Lod  0    4
-        10  Lit  0    0
-        11  Opr  0   12
-        12  Jpc  0   29
-        13  Lod  0    4
-        14  Opr  0    6
-        15  Jpc  0   20
-        16  Lod  1    5
-        17  Lod  0    3
-        18  Opr  0    2
-        19  Sto  1    5
-        20  Lit  0    2
-        21  Lod  0    3
-        22  Opr  0    4
-        23  Sto  0    3
-        24  Lod  0    4
-        25  Lit  0    2
-        26  Opr  0    5
-        27  Sto  0    4
-        28  Jmp  0    9
-        29  Opr  0    0
+         3  lod  1    3
+         4  sto  0    3
+         5  lod  1    4
+         6  sto  0    4
+         7  lit  0    0
+         8  sto  1    5
+         9  lod  0    4
+        10  lit  0    0
+        11  opr  0   12
+        12  jpc  0   29
+        13  lod  0    4
+        14  opr  0    6
+        15  jpc  0   20
+        16  lod  1    5
+        17  lod  0    3
+        18  opr  0    2
+        19  sto  1    5
+        20  lit  0    2
+        21  lod  0    3
+        22  opr  0    4
+        23  sto  0    3
+        24  lod  0    4
+        25  lit  0    2
+        26  opr  0    5
+        27  sto  0    4
+        28  jmp  0    9
+        29  opr  0    0
    30 
    30 procedure divide;
    30     var w;
    31     begin
    32         r:=x; q:=0; w:=y;
-   38 	while w<=r do w:=2*w;
-   47 	while w>y do
-   51 	    begin
-   51 	        q:=2*q; w:=w/2;
-   59 		if w<=r then
-   62 		    begin
-   63 		        r:=r-w;
-   67 			q:=q+1;
-   71 		    end
+   38   while w<=r do w:=2*w;
+   47   while w>y do
+   51       begin
+   51           q:=2*q; w:=w/2;
+   59     if w<=r then
+   62         begin
+   63             r:=r-w;
+   67       q:=q+1;
+   71         end
    71            end
    71 end;
         31  int  0    4
-        32  Lod  1    3
-        33  Sto  1    7
-        34  Lit  0    0
-        35  Sto  1    6
-        36  Lod  1    4
-        37  Sto  0    3
-        38  Lod  0    3
-        39  Lod  1    7
-        40  Opr  0   13
-        41  Jpc  0   47
-        42  Lit  0    2
-        43  Lod  0    3
-        44  Opr  0    4
-        45  Sto  0    3
-        46  Jmp  0   38
-        47  Lod  0    3
-        48  Lod  1    4
-        49  Opr  0   12
-        50  Jpc  0   72
-        51  Lit  0    2
-        52  Lod  1    6
-        53  Opr  0    4
-        54  Sto  1    6
-        55  Lod  0    3
-        56  Lit  0    2
-        57  Opr  0    5
-        58  Sto  0    3
-        59  Lod  0    3
-        60  Lod  1    7
-        61  Opr  0   13
-        62  Jpc  0   71
-        63  Lod  1    7
-        64  Lod  0    3
-        65  Opr  0    3
-        66  Sto  1    7
-        67  Lod  1    6
-        68  Lit  0    1
-        69  Opr  0    2
-        70  Sto  1    6
-        71  Jmp  0   47
-        72  Opr  0    0
+        32  lod  1    3
+        33  sto  1    7
+        34  lit  0    0
+        35  sto  1    6
+        36  lod  1    4
+        37  sto  0    3
+        38  lod  0    3
+        39  lod  1    7
+        40  opr  0   13
+        41  jpc  0   47
+        42  lit  0    2
+        43  lod  0    3
+        44  opr  0    4
+        45  sto  0    3
+        46  jmp  0   38
+        47  lod  0    3
+        48  lod  1    4
+        49  opr  0   12
+        50  jpc  0   72
+        51  lit  0    2
+        52  lod  1    6
+        53  opr  0    4
+        54  sto  1    6
+        55  lod  0    3
+        56  lit  0    2
+        57  opr  0    5
+        58  sto  0    3
+        59  lod  0    3
+        60  lod  1    7
+        61  opr  0   13
+        62  jpc  0   71
+        63  lod  1    7
+        64  lod  0    3
+        65  opr  0    3
+        66  sto  1    7
+        67  lod  1    6
+        68  lit  0    1
+        69  opr  0    2
+        70  sto  1    6
+        71  jmp  0   47
+        72  opr  0    0
    73 
    73 procedure gcd;
    73     var f,g;
    74     begin
    75         f:=x;
-   77 	g:=y;
-   79 	while f<>g do
-   83 	    begin
-   83 	        if f<g then g:=g-f;
-   91 		if g<f then f:=f-g;
-   99 	    end
+   77   g:=y;
+   79   while f<>g do
+   83       begin
+   83           if f<g then g:=g-f;
+   91     if g<f then f:=f-g;
+   99       end
    99     end;
         74  int  0    5
-        75  Lod  1    3
-        76  Sto  0    3
-        77  Lod  1    4
-        78  Sto  0    4
-        79  Lod  0    3
-        80  Lod  0    4
-        81  Opr  0    9
-        82  Jpc  0  100
-        83  Lod  0    3
-        84  Lod  0    4
-        85  Opr  0   10
-        86  Jpc  0   91
-        87  Lod  0    4
-        88  Lod  0    3
-        89  Opr  0    3
-        90  Sto  0    4
-        91  Lod  0    4
-        92  Lod  0    3
-        93  Opr  0   10
-        94  Jpc  0   99
-        95  Lod  0    3
-        96  Lod  0    4
-        97  Opr  0    3
-        98  Sto  0    3
-        99  Jmp  0   79
-       100  Opr  0    0
+        75  lod  1    3
+        76  sto  0    3
+        77  lod  1    4
+        78  sto  0    4
+        79  lod  0    3
+        80  lod  0    4
+        81  opr  0    9
+        82  jpc  0  100
+        83  lod  0    3
+        84  lod  0    4
+        85  opr  0   10
+        86  jpc  0   91
+        87  lod  0    4
+        88  lod  0    3
+        89  opr  0    3
+        90  sto  0    4
+        91  lod  0    4
+        92  lod  0    3
+        93  opr  0   10
+        94  jpc  0   99
+        95  lod  0    3
+        96  lod  0    4
+        97  opr  0    3
+        98  sto  0    3
+        99  jmp  0   79
+       100  opr  0    0
   101 
   101 begin
   102     x:=m; y:=n; call multiply;
@@ -142,22 +142,22 @@
   112     x:=34; y:=36; call gcd;
   117 end.
        101  int  0    8
-       102  Lit  0    7
-       103  Sto  0    3
-       104  Lit  0   85
-       105  Sto  0    4
-       106  Cal  0    2
-       107  Lit  0   25
-       108  Sto  0    3
-       109  Lit  0    3
-       110  Sto  0    4
-       111  Cal  0   31
-       112  Lit  0   34
-       113  Sto  0    3
-       114  Lit  0   36
-       115  Sto  0    4
-       116  Cal  0   74
-       117  Opr  0    0
+       102  lit  0    7
+       103  sto  0    3
+       104  lit  0   85
+       105  sto  0    4
+       106  cal  0    2
+       107  lit  0   25
+       108  sto  0    3
+       109  lit  0    3
+       110  sto  0    4
+       111  cal  0   31
+       112  lit  0   34
+       113  sto  0    3
+       114  lit  0   36
+       115  sto  0    4
+       116  cal  0   74
+       117  opr  0    0
 start PL/0
          7
         85

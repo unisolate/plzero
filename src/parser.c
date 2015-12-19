@@ -13,7 +13,7 @@ void gen(fct x, int y, int z) {
     code[codeAlloIdx].func = x;
     code[codeAlloIdx].lev = y;
     code[codeAlloIdx].addr = z;
-    codeAlloIdx = codeAlloIdx + 1;
+    ++codeAlloIdx;
 }
 
 void test(int s1, int s2, int n) {
@@ -27,7 +27,7 @@ void test(int s1, int s2, int n) {
 }
 
 void enter(object k) {  // enter object into table
-    tableIdx = tableIdx + 1;
+    ++tableIdx;
     strcpy(table[tableIdx].name, id);
     table[tableIdx].kind = k;
     
@@ -42,7 +42,7 @@ void enter(object k) {  // enter object into table
         case Variable:
             table[tableIdx].level = lev;
             table[tableIdx].addr = dataAlloIdx;
-            dataAlloIdx = dataAlloIdx + 1;
+            ++dataAlloIdx;
             break;
         case Proc:
             table[tableIdx].level = lev;
@@ -376,7 +376,7 @@ void block(int fsys) {
                 error(5);
             }
             
-            lev            = lev + 1;
+            ++lev;
             curTableIdx    = tableIdx;
             curDataAlloIdx = dataAlloIdx;
             
