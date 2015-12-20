@@ -28,10 +28,10 @@ void interpret() {
     printf("start PL/0\n");
     do {
         ins = code[prog];
-        prog += 1;
+        ++prog;
         switch (ins.func) {
             case Lit:
-                top += 1;
+                ++top;
                 stk[top] = ins.addr;
                 break;
             case Opr:
@@ -45,57 +45,57 @@ void interpret() {
                         stk[top] = -stk[top];
                         break;
                     case 2:
-                        top -= 1;
+                        --top;
                         stk[top] += stk[top + 1];
                         break;
                     case 3:
-                        top -= 1;
+                        --top;
                         stk[top] -= stk[top + 1];
                         break;
                     case 4:
-                        top -= 1;
+                        --top;
                         stk[top] *= stk[top + 1];
                         break;
                     case 5:
-                        top -= 1;
+                        --top;
                         stk[top] /= stk[top + 1];
                         break;
                     case 6:
                         stk[top] %= 2;
                         break;
                     case 8:
-                        top -= 1;
+                        --top;
                         stk[top] = (stk[top] == stk[top + 1]);
                         break;
                     case 9:
-                        top -= 1;
+                        --top;
                         stk[top] = (stk[top] != stk[top + 1]);
                         break;
                     case 10:
-                        top -= 1;
+                        --top;
                         stk[top] = (stk[top] < stk[top + 1]);
                         break;
                     case 11:
-                        top -= 1;
+                        --top;
                         stk[top] = (stk[top] >= stk[top + 1]);
                         break;
                     case 12:
-                        top -= 1;
+                        --top;
                         stk[top] = (stk[top] > stk[top + 1]);
                         break;
                     case 13:
-                        top -= 1;
+                        --top;
                         stk[top] = (stk[top] <= stk[top + 1]);
                 }
                 break;
             case Lod:
-                top += 1;
+                ++top;
                 stk[top] = stk[downBase(base, ins.lev) + ins.addr];
                 break;
             case Sto:
                 stk[downBase(base, ins.lev) + ins.addr] = stk[top];
                 printf("%10d\n", stk[top]);
-                top -= 1;
+                --top;
                 break;
             case Cal:  // generate new block mark
                 stk[top + 1] = downBase(base, ins.lev);

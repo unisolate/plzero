@@ -31,16 +31,16 @@ int tableIdx;      // current table index
 
 void gen(fct x, int y, int z);
 void test(int s1, int s2, int n);
-void enter(object k);
+void enter(object obj);
 int position(char* id);
 void constdeclaration();
 void vardeclaration();
 void listcode(int initCodeIdx);
-void factor(int fsys);
-void term(int fsys);
-void expression(int fsys);
-void condition(int fsys);
-void statement(int fsys);
-void block(int fsys);
+void factor(int followSym);
+void term(int followSym);
+void expression(int followSym);
+void condition(int followSym);
+void statement(int followSym);
+void block(int followSym);
 
 #endif

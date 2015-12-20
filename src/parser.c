@@ -26,12 +26,12 @@ void test(int s1, int s2, int n) {
     }
 }
 
-void enter(object k) {  // enter object into table
+void enter(object obj) {  // enter object into table
     ++tableIdx;
     strcpy(table[tableIdx].name, id);
-    table[tableIdx].kind = k;
+    table[tableIdx].kind = obj;
     
-    switch (k) {
+    switch (obj) {
         case Constant:
             if (num > ADDR_MAX) {
                 error(31);
@@ -56,7 +56,7 @@ int position(char* id) {  // find identifier id in table
     strcpy(table[0].name, id);
     i = tableIdx;
     while (strcmp(table[i].name, id) != 0) {
-        i = i - 1;
+        --i;
     }
     return i;
 }
@@ -95,15 +95,15 @@ void vardeclaration() {
 void listcode(int initCodeIdx) {  // list code generated for this block
     int i;
 
-    for (i = initCodeIdx; i <= codeAlloIdx - 1; i++) {
+    for (i = initCodeIdx; i < codeAlloIdx; i++) {
         printf("%10d%5s%3d%5d\n", i, mnemonic[code[i].func], code[i].lev, code[i].addr);
     }
 }
 
-void factor(int fsys) {
+void factor(int followSym) {
     int i;
 
-    test(facBegSys, fsys, 24);
+    test(facBegSys, followSym, 24);
     while (sym & facBegSys) {
         if (sym == IDENT) {
             i = position(id);
@@ -132,25 +132,25 @@ void factor(int fsys) {
             getsym();
         } else if (sym == LPAREN) {
             getsym();
-            expression(RPAREN | fsys);
+            expression(RPAREN | followSym);
             if (sym == RPAREN) {
                 getsym();
             } else {
                 error(22);
             }
         }
-        test(fsys, LPAREN, 23);
+        test(followSym, LPAREN, 23);
     }
 }
 
-void term(int fsys) {
+void term(int followSym) {
     int mulop;
 
-    factor(fsys | TIMES | SLASH);
+    factor(followSym | TIMES | SLASH);
     while (sym == TIMES || sym == SLASH) {
         mulop = sym;
         getsym();
-        factor(fsys | TIMES | SLASH);
+        factor(followSym | TIMES | SLASH);
         if (mulop == TIMES) {
             gen(Opr, 0, 4);
         } else {
@@ -159,23 +159,23 @@ void term(int fsys) {
     }
 }
 
-void expression(int fsys) {
+void expression(int followSym) {
     int addop;
 
     if (sym == PLUS || sym == MINUS) {
         addop = sym;
         getsym();
-        term(fsys | PLUS | MINUS);
+        term(followSym | PLUS | MINUS);
         if (addop == MINUS) {
             gen(Opr, 0, 1);
         }
     } else {
-        term(fsys | PLUS | MINUS);
+        term(followSym | PLUS | MINUS);
     }
     while (sym == PLUS || sym == MINUS) {
         addop = sym;
         getsym();
-        term(fsys | PLUS | MINUS);
+        term(followSym | PLUS | MINUS);
         if (addop == PLUS) {
             gen(Opr, 0, 2);
         } else {
@@ -184,21 +184,21 @@ void expression(int fsys) {
     }
 }
 
-void condition(int fsys) {
+void condition(int followSym) {
     int relop;
 
     if (sym == ODDSYM) {
         getsym();
-        expression(fsys);
+        expression(followSym);
         gen(Opr, 0, 6);
     } else {
-        expression(fsys | EQL | NEQ | LSS | GTR | LEQ | GEQ);
+        expression(followSym | EQL | NEQ | LSS | GTR | LEQ | GEQ);
         if (!(sym & (EQL | NEQ | LSS | GTR | LEQ | GEQ))) {
             error(20);
         } else {
             relop = sym;
             getsym();
-            expression(fsys);
+            expression(followSym);
             switch (relop) {
                 case EQL:
                     gen(Opr, 0, 8);
@@ -223,8 +223,8 @@ void condition(int fsys) {
     }
 }
 
-void statement(int fsys) {
-    int i, cx1, cx2;
+void statement(int followSym) {
+    int i, curCodeIdx, tmpCodeIdx;
 
     if (sym == IDENT) {
         i = position(id);
@@ -240,7 +240,7 @@ void statement(int fsys) {
         } else {
             error(13);
         }
-        expression(fsys);
+        expression(followSym);
         if (i != 0) {
             gen(Sto, lev - table[i].level, table[i].addr);
         }
@@ -261,26 +261,26 @@ void statement(int fsys) {
         }
     } else if (sym == IFSYM) {
         getsym();
-        condition(fsys | THENSYM | DOSYM);
+        condition(followSym | THENSYM | DOSYM);
         if (sym == THENSYM) {
             getsym();
         } else {
             error(16);
         }
-        cx1 = codeAlloIdx;
+        curCodeIdx = codeAlloIdx;
         gen(Jpc, 0, 0);
-        statement(fsys);
-        code[cx1].addr = codeAlloIdx;
+        statement(followSym);
+        code[curCodeIdx].addr = codeAlloIdx;
     } else if (sym == BEGINSYM) {
         getsym();
-        statement(fsys | SEMICOLON | ENDSYM);
+        statement(followSym | SEMICOLON | ENDSYM);
         while (sym == SEMICOLON || (sym & statBegSys)) {
             if (sym == SEMICOLON) {
                 getsym();
             } else {
                 error(10);
             }
-            statement(fsys | SEMICOLON | ENDSYM);
+            statement(followSym | SEMICOLON | ENDSYM);
         }
         if (sym == ENDSYM) {
             getsym();
@@ -288,24 +288,25 @@ void statement(int fsys) {
             error(17);
         }
     } else if (sym == WHILESYM) {
-        cx1 = codeAlloIdx;
+        curCodeIdx = codeAlloIdx;
         getsym();
-        condition(fsys | DOSYM);
-        cx2 = codeAlloIdx;
+        condition(followSym | DOSYM);
+        tmpCodeIdx = codeAlloIdx;
         gen(Jpc, 0, 0);
         if (sym == DOSYM) {
             getsym();
         } else {
             error(18);
         }
-        statement(fsys);
-        gen(Jmp, 0, cx1);
-        code[cx2].addr = codeAlloIdx;
+        statement(followSym);
+        gen(Jmp, 0, curCodeIdx);
+        code[tmpCodeIdx].addr = codeAlloIdx;
     }
-    test(fsys, 0, 19);
+    test(followSym, 0, 19);
 }
 
-void block(int fsys) {
+// followSym: follow symbol set of factor
+void block(int followSym) {
     int initTableIdx;    // initial table index
     int initCodeIdx;     // initial code index
     int curTableIdx;     // save current table index
@@ -380,15 +381,15 @@ void block(int fsys) {
             curTableIdx    = tableIdx;
             curDataAlloIdx = dataAlloIdx;
             
-            block(fsys | SEMICOLON);
+            block(followSym | SEMICOLON);
             
-            lev         = lev - 1;
+            --lev;
             tableIdx    = curTableIdx;
             dataAlloIdx = curDataAlloIdx;
             
             if (sym == SEMICOLON) {
                 getsym();
-                test(statBegSys | IDENT | PROCSYM, fsys, 6);
+                test(statBegSys | IDENT | PROCSYM, followSym, 6);
             } else {
                 error(5);
             }
@@ -397,12 +398,12 @@ void block(int fsys) {
     } while (sym & declBegSys);
     
     code[table[initTableIdx].addr].addr = codeAlloIdx;
-    table[initTableIdx].addr         = codeAlloIdx;  // start addr of code
-    initCodeIdx                      = codeAlloIdx;
+    table[initTableIdx].addr            = codeAlloIdx;  // start addr of code
+    initCodeIdx                         = codeAlloIdx;
     
     gen(Int, 0, dataAlloIdx);
-    statement(fsys | SEMICOLON | ENDSYM);
+    statement(followSym | SEMICOLON | ENDSYM);
     gen(Opr, 0, 0);  // return
-    test(fsys, 0, 8);
+    test(followSym, 0, 8);
     listcode(initCodeIdx);
 }
