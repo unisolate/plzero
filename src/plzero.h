@@ -2,7 +2,7 @@
 #define _PLZERO_
 
 #define ID_LEN     10    // length of identifiers
-#define RES_NUM    11    // number of reserved words
+#define RES_NUM    13    // number of reserved words
 #define CODE_MAX   2000  // size of code array
 
 #define NUL        0x1
@@ -35,6 +35,8 @@
 #define CONSTSYM   0x8000000
 #define VARSYM     0x10000000
 #define PROCSYM    0x20000000
+#define READSYM    0x40000000
+#define WRITESYM   0x80000000
 
 typedef enum {
     Lit,

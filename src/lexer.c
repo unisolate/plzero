@@ -80,9 +80,6 @@ void getsym() {
         if (ch == '=') {
             sym = LEQ;
             getch();
-        } else if (ch == '>') {
-            sym = NEQ;
-            getch();
         } else {
             sym = LSS;
         }

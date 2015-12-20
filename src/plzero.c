@@ -20,7 +20,9 @@ char *resWord[RES_NUM] = {
     "procedure",
     "then",
     "var",
-    "while"
+    "while",
+    "read",
+    "write"
 };
 
 int wordSym[256] = {
@@ -34,7 +36,9 @@ int wordSym[256] = {
     PROCSYM,
     THENSYM,
     VARSYM,
-    WHILESYM
+    WHILESYM,
+    READSYM,
+    WRITESYM
 };
 
 void error(int n) {
@@ -62,6 +66,7 @@ void init() {
     wordSym[','] = COMMA;
     wordSym['.'] = PERIOD;
     wordSym[';'] = SEMICOLON;
+    wordSym['#'] = NEQ;
 
     strcpy(mnemonic[Lit], "lit");
     strcpy(mnemonic[Opr], "opr");
